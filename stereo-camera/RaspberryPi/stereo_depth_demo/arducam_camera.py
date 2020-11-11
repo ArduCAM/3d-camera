@@ -19,21 +19,6 @@ class MyCamera(object):
         # set height
         if height != -1:
             self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-        
-        self.fix_orientation()
-
-    def fix_orientation(self):
-        _, sensor_id = self.arducam_utils.read_dev(ArducamUtils.FIRMWARE_SENSOR_ID_REG)
-        print("0x{:X}".format(sensor_id))
-        if sensor_id == 0x5647:
-            self.arducam_utils.cvt_code = cv2.COLOR_BAYER_GB2BGR
-            self.cap.grab()
-            self.arducam_utils.write_sensor(0x3820, 0x42)
-            self.arducam_utils.write_sensor(0x3821, 0x00)
-        elif sensor_id == 0x0219:
-            self.arducam_utils.cvt_code = cv2.COLOR_BAYER_RG2BGR
-            self.cap.grab()
-            self.arducam_utils.write_sensor(0x0172, 0x03)
 
     def get_framesize(self):
         width = self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)
